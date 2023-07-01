@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Editor and Previewer</title>
+    <script src="https://unpkg.com/prettier/standalone.js"></script>
+    <script src="https://unpkg.com/prettier/parser-html.js"></script>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        display: flex;
+        width: 95vw;
+        /* max-width: 900px; */
+      }
+
+      .editor-container {
+        width: 80vw;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      h2 {
+        margin: 0;
+        margin-bottom: 10px;
+      }
+      .buttons {
+        width: 20vw;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-right: 10px;
+        flex-wrap: wrap;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      button {
+        width: 120px;
+        margin: 5px;
+        padding: 8px 16px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      #editor {
+        width: 100%;
+        height: 25vw;
+        border: 1px solid #ccc;
+        padding: 5px;
+        resize: vertical;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div>
+        <h2>HTML Tags</h2>
+        <div class="buttons">
+          <button
+            onclick="insertTag(`<!DOCTYPE html>\n<html lang='en'>\n<head>\n<meta charset=\'UTF-8\' />\n<meta name=\'viewport\' content=\'width=device-width, initial-scale=1.0\'/>\n<title>Document</title>\n</head>\n&lt;body&gt\n&lt;/body&gt\n</html>`)"
+          >
+            start html
+          </button>
+          <button onclick="insertTag('<nav>\n</nav>')">navigation</button>
+          <button onclick="insertTag('<ul>\n</ul>')">ul</button>
+          <button onclick="insertTag('<li>\n</li>')">li</button>
+          <button onclick="insertTag('<ol>\n</ol>')">ol</button>
+          <button onclick="insertTag('<h1></h1>')">h1</button>
+          <button onclick="insertTag('<h2></h2>')">h2</button>
+          <button onclick="insertTag('<h3></h3>')">h3</button>
+          <button onclick="insertTag('<h4></h4>')">h4</button>
+          <button onclick="insertTag('<h5></h5>')">h5</button>
+          <button onclick="insertTag('<h6></h6>')">h6</button>
+          <button onclick="insertTag('<p></p>')">paragraph</button>
+          <button onclick="insertTag('<span>\n</span>')">span</button>
+          <button onclick="insertTag('<label>\n</label>')">label</button>
+          <button onclick="insertTag('<div>\n</div>')">div</button>
+          <button onclick="insertTag('<form>\n</form>')">form</button>
+          <button onclick="insertTag('<input/>')">input</button>
+          <button onclick="insertTag('<button>\n</button>')">button</button>
+          <button onclick="insertTag('<select>\n</select>')">select</button>
+          <button onclick="insertTag('<option>\n</option>')">option</button>
+          <button onclick="insertTag('<a href=\'\'></a>')">link</button>
+          <button onclick="insertTag('<img src=\'\' alt=\'\'>')">image</button>
+          <button onclick="insertTag('<table>\n</table>')">table</button>
+          <button onclick="insertTag('<th>\n</th>')">th</button>
+          <button onclick="insertTag('<tr>\n</tr>')">tr</button>
+          <button onclick="insertTag('<td>\n</td>')">td</button>
+          <button onclick="insertTag('<br/>')">br</button>
+          <button onclick="insertTag('<hr/>')">hr</button>
+          <button onclick="insertTag('<style>\n</style>')">style</button>
+          <button onclick="insertTag('<script>\n</script>')">script</button>
+          <!-- Add more buttons for other HTML tags -->
+        </div>
+      </div>
+      <div class="editor-container">
+        <h2>HTML Editor</h2>
+        <div>
+          <button onclick="prettifyEditor()">Prettify</button>
+          <button onclick="executeCommand('undo')">Undo</button>
+          <button onclick="executeCommand('redo')">Redo</button>
+        </div>
+        <textarea
+          id="editor"
+          placeholder="Write your HTML code here..."
+        ></textarea>
+        <h2>Preview</h2>
+        <button onclick="openPreview()">Preview</button>
+      </div>
+    </div>
+    <script>
+      var editor = document.getElementById("editor");
+      function insertTag(tag) {
+        var startPos = editor.selectionStart;
+        var endPos = editor.selectionEnd;
+        var text = editor.value;
+        var newText =
+          text.substring(0, startPos) + tag + text.substring(endPos);
+        editor.value = newText;
+        // Move the cursor to the end of the inserted tag
+        editor.focus();
+
+        // Move the cursor to the end of the inserted tag
+        editor.setSelectionRange(startPos + tag.length, startPos + tag.length);
+        // Trigger the updatePreview function to show the updated preview
+      }
+      function executeCommand(command) {
+        document.execCommand(command, false, null);
+      }
+      function prettifyEditor() {
+        var text = editor.value;
+        var formattedCode = prettier.format(text, {
+          parser: "html",
+          plugins: prettierPlugins,
+        });
+        editor.value = formattedCode;
+      }
+
+      function openPreview() {
+        var previewContent = editor.value;
+        var newTab = window.open();
+        newTab.document.open();
+        newTab.document.write(previewContent);
+        newTab.document.close();
+      }
+
+      editor.addEventListener("input", updatePreview);
+    </script>
+  </body>
+</html>
