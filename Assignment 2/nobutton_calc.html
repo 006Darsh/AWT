@@ -25,7 +25,10 @@
       h1 {
         margin-top: 0;
       }
-
+      span {
+        display: flex;
+        justify-content: flex-start;
+      }
       label {
         display: inline-block;
         width: 100px;
@@ -39,10 +42,6 @@
         border-radius: 5px;
         height: 25px;
         width: 19vw;
-      }
-
-      span {
-        color: red;
       }
 
       #ans {
@@ -59,7 +58,7 @@
         type="number"
         id="num1"
         placeholder="Enter Number 1"
-        oninput="calculate()"
+        onblur="calculate()"
       />
       <p id="s1"></p>
       <label>Number 2:</label>
@@ -67,11 +66,16 @@
         type="number"
         id="num2"
         placeholder="Enter Number 2"
-        oninput="calculate()"
+        onblur="calculate()"
       />
       <p id="s2"></p>
       <label>Answer:</label>
-      <span id="ans"></span>
+      <br/>
+      <span id="add"></span>
+      <span id="sub"></span>
+      <span id="mul"></span>
+      <span id="div"></span>
+      <span id="mod"></span>
 
       <script>
         function calculate() {
@@ -79,11 +83,9 @@
           var b = parseFloat(document.getElementById("num2").value);
           var as = document.getElementById("s1");
           var bs = document.getElementById("s2");
-          var result = document.getElementById("ans");
 
           as.innerHTML = "";
           bs.innerHTML = "";
-          result.innerHTML = "";
 
           if (isNaN(a)) {
             as.style.color = "red";
@@ -96,7 +98,17 @@
           }
 
           if (!isNaN(a) && !isNaN(b)) {
-            result.innerHTML = a + b;
+            document.getElementById("add").innerHTML = `ADD: ${a + b}`;
+            document.getElementById("sub").innerHTML = `SUB: ${a - b}`;
+            document.getElementById("mul").innerHTML = `MUL: ${a * b}`;
+            if (b === 0) {
+              document.getElementById("div").style.color = "red";
+              document.getElementById("div").innerHTML =
+                "DIV: Cannot divide by zero";
+            } else {
+              document.getElementById("div").innerHTML = `DIV: ${a / b}`;
+            }
+            document.getElementById("mod").innerHTML = `MOD: ${a % b}`;
           }
         }
       </script>
