@@ -34,7 +34,7 @@
         margin-bottom: 10px;
       }
       .buttons {
-        width: 20vw;
+        width: 200px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -45,7 +45,7 @@
       }
 
       button {
-        width: 120px;
+        width: 90px;
         margin: 5px;
         padding: 8px 16px;
         font-size: 14px;
@@ -62,10 +62,15 @@
 
       #editor {
         width: 100%;
-        height: 25vw;
+        height: 80%;
         border: 1px solid #ccc;
         padding: 5px;
         resize: vertical;
+      }
+      .info-icon {
+        font-size: 14px;
+        margin-left: 5px;
+        cursor: default;
       }
     </style>
   </head>
@@ -114,19 +119,43 @@
       <div class="editor-container">
         <h2>HTML Editor</h2>
         <div>
-          <button onclick="prettifyEditor()">Prettify</button>
-          <button onclick="executeCommand('undo')">Undo</button>
-          <button onclick="executeCommand('redo')">Redo</button>
+          <button onclick="prettifyEditor()">
+            Prettify<span class="info-icon" title="Keyboard shortcut: Ctrl+P"
+              >&#9432;</span
+            >
+          </button>
+          <button onclick="executeCommand('undo')">
+            Undo
+            <span
+              class="info-icon"
+              title="Keyboard shortcut: Ctrl+Z(this shortcut works on keyboard entered values)"
+              >&#9432;</span
+            >
+          </button>
+          <button onclick="executeCommand('redo')">
+            Redo
+            <span
+              class="info-icon"
+              title="Keyboard shortcut: Ctrl+Y(this shortcut works on keyboard entered values)"
+              >&#9432;</span
+            >
+          </button>
         </div>
         <textarea
           id="editor"
           placeholder="Write your HTML code here..."
         ></textarea>
         <h2>Preview</h2>
-        <button onclick="openPreview()">Preview</button>
+        <button onclick="openPreview()" style="width: 110px;">Preview <span
+              class="info-icon"
+              title="Keyboard shortcut: Alt+L"
+              >&#9432;</span
+            ></button>
       </div>
     </div>
     <script>
+      var undoStack = [];
+      var redoStack = [];
       var editor = document.getElementById("editor");
       function insertTag(tag) {
         var startPos = editor.selectionStart;
@@ -136,14 +165,53 @@
           text.substring(0, startPos) + tag + text.substring(endPos);
         editor.value = newText;
         // Move the cursor to the end of the inserted tag
+        undoStack.push({
+          value: text,
+          start: startPos,
+          end: endPos,
+        });
+        redoStack = []; // Clear redo stack
         editor.focus();
-
         // Move the cursor to the end of the inserted tag
         editor.setSelectionRange(startPos + tag.length, startPos + tag.length);
         // Trigger the updatePreview function to show the updated preview
       }
       function executeCommand(command) {
-        document.execCommand(command, false, null);
+        if (command === "undo") {
+          if (undoStack.length > 0) {
+            var currentState = {
+              value: editor.value,
+              start: editor.selectionStart,
+              end: editor.selectionEnd,
+            };
+            redoStack.push(currentState);
+
+            var previousState = undoStack.pop();
+            editor.value = previousState.value;
+            editor.setSelectionRange(previousState.start, previousState.end);
+          } else {
+              editor.dispatchEvent(
+                new KeyboardEvent("keydown", { key: "z", ctrlKey: true })
+              );
+          }
+        } else if (command === "redo") {
+          if (redoStack.length > 0) {
+            var currentState = {
+              value: editor.value,
+              start: editor.selectionStart,
+              end: editor.selectionEnd,
+            };
+            undoStack.push(currentState);
+
+            var nextState = redoStack.pop();
+            editor.value = nextState.value;
+            editor.setSelectionRange(nextState.start, nextState.end);
+          } else {
+            editor.dispatchEvent(
+              new KeyboardEvent("keydown", { key: "y", ctrlKey: true })
+            );
+          }
+        }
       }
       function prettifyEditor() {
         var text = editor.value;
@@ -153,7 +221,18 @@
         });
         editor.value = formattedCode;
       }
-
+      document.addEventListener("keydown", function (event) {
+        if (event.ctrlKey && event.key === "p") {
+          event.preventDefault();
+          prettifyEditor();
+        }
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.altKey && event.key === "l") {
+          event.preventDefault();
+          prettifyEditor();
+        }
+      });
       function openPreview() {
         var previewContent = editor.value;
         var newTab = window.open();
@@ -162,7 +241,7 @@
         newTab.document.close();
       }
 
-      editor.addEventListener("input", updatePreview);
+      // editor.addEventListener("input", updatePreview);
     </script>
   </body>
 </html>
