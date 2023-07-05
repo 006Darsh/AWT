@@ -3,7 +3,7 @@ function validate(event) {
 
   clearErrors();
 
-  var fullName = document.getElementById("f_Name").value;
+  var fullName = document.getElementById("f_name").value;
   var username = document.getElementById("u_name").value;
   var password = document.getElementById("pass").value;
   var confirmPassword = document.getElementById("c_pass").value;
@@ -72,7 +72,8 @@ function validate(event) {
   }
 
   if (isValid) {
-    window.location.href = "prevent.html";
+    alert("Registration Successful!");
+    // Perform further actions or redirect to another page
   }
 }
 
