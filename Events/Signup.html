@@ -73,7 +73,7 @@
   </style>
 </head>
 <body>
-  <form id="signupform" onsubmit="validate(event)">
+  <form action="prevent.html" id="signupform" onsubmit="validate(event)">
     <div class="container">
       <h1>SignUp Form</h1>
       <hr />
@@ -98,14 +98,14 @@
       <p id="confirmPasswordError" class="error"></p>
 
       <label>Gender:</label>
-      <input type="radio" id="male" name="gender" value="Male" />
-      <label for="male">Male</label>
-      <input type="radio" id="female" name="gender" value="Female" />
-      <label for="female">Female</label>
+      <input type="radio" id="male" name="gender" value="Male" style="width: 2vw;"/>
+      <span for="male" style="width: fit-content;">Male</span>
+      <input type="radio" id="female" name="gender" value="Female" style="width: 2vw;"/>
+      <span for="female" style="width: fit-content;">Female</span>
       <p id="genderError" class="error"></p>
 
       <label>Phone No:</label>
-      <input type="tel" id="phone" placeholder="Enter Phone Number" />
+      <input type="tel" id="phone" placeholder="Enter Phone Number" maxlength="13"/>
       <p id="phoneError" class="error"></p>
 
       <label>State:</label>
@@ -117,8 +117,8 @@
       </select>
       <p id="stateError" class="error"></p>
 
-      <label>
-        <input type="checkbox" id="agree" />
+      <label style="margin-right: -10vw;width: 22vw;">
+        <input type="checkbox" id="agree" style="width: 2vw;margin-bottom: -2vw; margin-left: -10vw;"/>
         I agree to all the details which I have filled
       </label>
       <p id="agreementError" class="error"></p>

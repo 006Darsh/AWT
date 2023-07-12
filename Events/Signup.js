@@ -48,15 +48,15 @@ function validate(event) {
     isValid = false;
   }
 
-  if (!phone.match(/^[0-9]{10}$/)) {
+  if (!phone.match(/^(\+91|0)?[6-9]\d{9}$/)) {
     document.getElementById("phoneError").textContent =
-      "* Invalid phone number (10 digits only)";
+      "* Invalid phone number (10 digits only and only indian number e.g., 07096192045 or +917096192045)";
     isValid = false;
   }
 
-  if (!email.match(/^\S+@\S+\.\S+$/)) {
+  if (!email.match(/^[^\s@]+@(charusat\.edu\.in|charusat\.ac\.in)$/)) {
     document.getElementById("emailError").textContent =
-      "* Invalid email address";
+      "* Invalid email address(It accepts only charusat email)";
     isValid = false;
   }
 
@@ -73,6 +73,7 @@ function validate(event) {
 
   if (isValid) {
     alert("Registration Successful!");
+    
     // Perform further actions or redirect to another page
   }
 }
