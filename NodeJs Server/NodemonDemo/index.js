@@ -25,10 +25,20 @@ app.post("/display", function (req, res) {
   var Elective_subject = ele_sub_code + " " + ele_subject;
 
   var FullName = fname + " " + lname;
-
-  res.send(
-    `Full Name: ${FullName}<br/>Email: ${email}<br\>Phone No: ${phone}<br/>Elective Subject: ${Elective_subject}`
-  );
+  var collegeinfo = {
+    "Full Name: ": FullName,
+    "Email: ": email,
+    "Phone No: ": phone,
+    "Elective Subject: ": Elective_subject,
+  };
+  var responseString = "";
+  for (const keys in collegeinfo) {
+    responseString += `<b>${keys}</b>${collegeinfo[keys]}<br\>`;
+  }
+  res.send(responseString);
+  //   res.send(
+  //     `Full Name: ${FullName}<br/>Email: ${email}<br\>Phone No: ${phone}<br/>Elective Subject: ${Elective_subject}`
+  //   );
 });
 
 app.listen(3000, function () {
