@@ -17,19 +17,19 @@ app.use(
 app.use(cookieParser());
 app.use(
   session({
-    key: "user id",
+    key: "_id",
     secret: "This is secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
-      expires: 600000,
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
     },
   })
 );
 
 var sessionChecker = (req, res, next) => {
-  if (req.session.user && req.cookies.user_id) {
-    res.redirect("/dasboard");
+  if (req.session.user && req.cookies._id) {
+    res.redirect("/dashboard");
   } else {
     next();
   }
@@ -44,25 +44,28 @@ app
   .get(sessionChecker, (req, res) => {
     res.sendFile(__dirname + "/public/Login.html");
   })
-  .post((req, res) => {
+  .post(async (req, res) => {
     var username = req.body.username,
       password = req.body.password;
     try {
-      var user = User.findOne({ username: username }).exec();
+      var user = await User.findOne({ username: username }).exec();
       if (!user) {
         res.redirect("/login");
+        return; // Return to avoid further execution
       }
+
       user.comparePassword(password, (error, match) => {
         if (!match) {
           res.redirect("/login");
+          return; // Return to avoid further execution
         }
-        console.log(1);
+
+        req.session.user = user; // Corrected line
+        res.redirect("/dashboard");
       });
-      res.session.use = user;
-      console.log(1);
-      res.redirect("/dashboard");
     } catch (error) {
       console.log(error);
+      res.redirect("/login");
     }
   });
 app
@@ -73,13 +76,13 @@ app
   .post(async (req, res) => {
     try {
       const user = new User({
-        username: req.body.username, // Assuming this is a string
-        email: req.body.email, // Make sure email is provided
+        username: req.body.username,
+        email: req.body.email,
         password: req.body.password,
       });
 
       const doc = await user.save();
-      req.session.use = doc;
+      req.session.user = doc; // Corrected line
       res.redirect("/dashboard");
     } catch (err) {
       console.error(err);
@@ -88,11 +91,21 @@ app
   });
 
 app.get("/dashboard", (req, res) => {
-  if (req.session.user && req.cookies.user_id) {
+  if (req.session.user && req.cookies._id) {
     res.sendFile(__dirname + "/public/dashboard.html");
   } else {
     res.redirect("/login");
   }
+});
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+    } else {
+      res.clearCookie("_id");
+      res.redirect("/login");
+    }
+  });
 });
 
 app.listen(port, hostname, () => {
