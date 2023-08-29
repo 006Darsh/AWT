@@ -12,7 +12,7 @@ app.use(
 );
 
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/html/form.html");
+  res.sendFile(__dirname + "/html/task1.html");
 });
 
 app.post("/display", function (req, res) {

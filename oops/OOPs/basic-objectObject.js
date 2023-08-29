@@ -1,27 +1,27 @@
 // Creating an object
 let person = {
-    firstName: 'Mrugendra',
-    lastName: 'Rahevar',
-    age: 41,
-    hobbies: ['reading', 'gaming', 'Tracking'],
-    greet: function() {
-        console.log(`Hello, my name is ${this.firstName} 
+  firstName: "Mrugendra",
+  lastName: "Rahevar",
+  age: 41,
+  hobbies: ["reading", "gaming", "Tracking"],
+  greet: function () {
+    console.log(`Hello, my name is ${this.firstName} 
         ${this.lastName}. 
         I'm ${this.age} years old.`);
-    }
+  },
 };
 
-  // Accessing object properties
-  console.log(person.firstName); // Output: Mrugendra
-  console.log(person['lastName']); // Output: Rahevar
+// Accessing object properties
+console.log(person.firstName); // Output: Mrugendra
+console.log(person["lastName"]); // Output: Rahevar
 
-  // Modifying object properties
-    person.age = 40;
-    person['hobbies'].push('coding');
-    console.log(person)
-    
-  // Calling object method
-  person.greet(); // Output: Hello, my name is John Doe. I'm 32 years old.
+// Modifying object properties
+person.age = 40;
+person["hobbies"].push("coding");
+console.log(person);
+
+// Calling object method
+person.greet(); // Output: Hello, my name is John Doe. I'm 32 years old.
 
 /*  TASK 1
 
@@ -34,18 +34,18 @@ Change the value of the name to <Frind Name>.
 Remove the property name from the object.
 */
 //Soultion of TASK 1
-function task1(){
-let user = {};
-user.name = 'Mrugendra';
-user.surname = 'Rahevar';
-user.name = 'Friend Name';
-console.log("\n \n");
-console.log(user);
-delete user.name;
-console.log("After Delete the user.name")
-console.log(user);
+function task1() {
+  let user = {};
+  user.name = "Mrugendra";
+  user.surname = "Rahevar";
+  user.name = "Friend Name";
+  console.log("\n \n");
+  console.log(user);
+  delete user.name;
+  console.log("After Delete the user.name");
+  console.log(user);
 }
-task1()
+task1();
 
 /* TASK 2
 We have an object storing salaries of our team:
@@ -60,21 +60,20 @@ If salaries is empty, then the result must be 0.
 */
 
 //Solution of TASK 2
-add=()=>{
-    let salaries = {
+add = () => {
+  let salaries = {
     Nirav: 100,
     Chintan: 160,
-    Nikunj: 130
-};
+    Nikunj: 130,
+  };
 
-let sum = 0;
-for (let key in salaries) {
+  let sum = 0;
+  for (let key in salaries) {
     sum += salaries[key];
-}
-return sum;
-}
-console.log(add())
-
+  }
+  return sum;
+};
+console.log(add());
 
 /* TASK 3
 
@@ -103,11 +102,12 @@ P.S. Use typeof to check for a number here.
 */
 
 //Solution of TASK 3
-function multiplyNumeric(obj) {//{menu}
-    for (let key in obj) {//key=[200,300,My menu]
-        if (typeof obj[key] == 'number') {
-        obj[key] *= 2; //obj[key]=obj[key]*2
-        }
+function multiplyNumeric(obj) {
+  //{menu}
+  for (let key in obj) {
+    //key=[200,300,My menu]
+    if (typeof obj[key] == "number") {
+      obj[key] *= 2; //obj[key]=obj[key]*2
     }
+  }
 }
-
