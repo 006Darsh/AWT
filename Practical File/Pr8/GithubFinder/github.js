@@ -1,6 +1,3 @@
-//github.js
-
-
 class Github {
   constructor() {
     this.client_id = "cf0d333f57abe0450b4c";
