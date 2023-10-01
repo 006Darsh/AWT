@@ -9,13 +9,16 @@
 // module.exports = User;
 
 module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define("User", {
-        username: DataTypes.STRING,
-        },
-        {
-            tableName: 'tblUser',
-            engine: "InnoDB" //InnoDB, MYISAM, MEMORY, CSV, etc
-        })
-        
-    return User;
-}
+  const User = sequelize.define(
+    "User",
+    {
+      username: DataTypes.STRING,
+    },
+    {
+      tableName: "tblUser",
+      engine: "InnoDB", //InnoDB, MYISAM, MEMORY, CSV, etc
+    }
+  );
+
+  return User;
+};
