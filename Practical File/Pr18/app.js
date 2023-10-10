@@ -17,8 +17,8 @@ const transporter = nodemailer.createTransport({
   secure: false,
   requireTLS: true,
   auth: {
-    user: process.env.MAILER,
-    pass: process.env.EMAILPASS,
+    user: "YourEmail",
+    pass: "YourPass",
   },
 });
 
@@ -40,7 +40,7 @@ app.post("/subscribe", (req, res) => {
 
   // Create email message
   const mailOptions = {
-    from: process.env.MAILER,
+    from: "YourEmail",
     to: email,
     subject: "Welcome to Our Newsletter",
     text: "Thank you for subscribing to our newsletter!",
@@ -62,7 +62,5 @@ app.post("/subscribe", (req, res) => {
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(
-    `Server is running on port ${PORT} and host link is http://localhost:${PORT}`
-  );
+  console.log(`Server is running on port ${PORT} and host link is http://localhost:${PORT}`);
 });
