@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 mongoose.connect("mongodb://localhost:27017/LoginDemo", {
-//   userNewUrlParser: true,
+  //   userNewUrlParser: true,
   useUnifiedTopology: true,
-//   useCreateIndex: true,
+  //   useCreateIndex: true,
 });
 
 const userSchema = mongoose.Schema({
